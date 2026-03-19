@@ -4,7 +4,7 @@ import { useState, useRef, useCallback } from "react";
 
 type UploadState = "idle" | "dragging" | "processing" | "done";
 
-const HeroSection = () => {
+const HeroSection = ({ onStartQuiz }: { onStartQuiz?: () => void }) => {
   const [uploadState, setUploadState] = useState<UploadState>("idle");
   const [fileName, setFileName] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
