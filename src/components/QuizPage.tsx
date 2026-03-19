@@ -154,6 +154,9 @@ const QuizPage = ({ onClose }: { onClose: () => void }) => {
     setExpandedNote(null);
   };
 
+  const isPerfect = pct === 100;
+  useConfetti(phase === "results" && isPerfect);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
