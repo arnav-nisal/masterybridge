@@ -4,7 +4,7 @@ import { useState, useRef, useCallback } from "react";
 
 type UploadState = "idle" | "dragging" | "processing" | "done";
 
-const HeroSection = () => {
+const HeroSection = ({ onStartQuiz }: { onStartQuiz?: () => void }) => {
   const [uploadState, setUploadState] = useState<UploadState>("idle");
   const [fileName, setFileName] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -173,7 +173,10 @@ const HeroSection = () => {
                 </div>
                 <p className="text-primary text-sm mb-4">3 micro-questions ready • Estimated 5 min</p>
                 <div className="flex items-center justify-center gap-3">
-                  <button className="bg-primary text-primary-foreground px-6 py-2.5 rounded-lg font-semibold text-sm glow-cyan hover:brightness-110 hover:scale-105 transition-all">
+                  <button
+                    onClick={onStartQuiz}
+                    className="bg-primary text-primary-foreground px-6 py-2.5 rounded-lg font-semibold text-sm glow-cyan hover:brightness-110 hover:scale-105 transition-all"
+                  >
                     Start Quiz
                   </button>
                   <button
