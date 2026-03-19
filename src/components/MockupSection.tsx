@@ -62,7 +62,7 @@ const MockupSection = () => {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold text-center mb-4"
         >
-          The <span className="text-gradient">Feynman Mirror</span> in Action
+          The <span className="text-gradient">AI Tutor</span> in Action
         </motion.h2>
         <p className="text-muted-foreground text-center mb-4 max-w-lg mx-auto">
           Our AI challenges you to explain concepts simply—the ultimate test of true understanding.

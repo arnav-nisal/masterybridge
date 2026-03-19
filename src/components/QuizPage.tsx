@@ -3,7 +3,7 @@ import { useConfetti } from "@/hooks/useConfetti";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircle2, XCircle, ArrowRight, RotateCcw, Trophy,
-  Sparkles, BookOpen, AlertTriangle, Target, ChevronDown, ChevronUp,
+  Sparkles, BookOpen, AlertTriangle, Target, ChevronDown, ChevronUp, Baby,
 } from "lucide-react";
 
 type Question = {
@@ -12,6 +12,7 @@ type Question = {
   correct: number;
   explanation: string;
   topic: string;
+  childExplanation: string;
 };
 
 const questions: Question[] = [
@@ -21,6 +22,7 @@ const questions: Question[] = [
     options: ["The value of a variable", "The memory address of a variable", "The data type of a variable", "The size of a variable"],
     correct: 1,
     explanation: "A pointer stores the memory address of another variable, not the value itself.",
+    childExplanation: "Imagine you have a treasure chest hidden somewhere. A pointer is like a treasure map — it doesn't have the gold, but it tells you exactly which room the chest is in! 🗺️",
   },
   {
     topic: "Pointers",
@@ -28,6 +30,7 @@ const questions: Question[] = [
     options: ["Multiplies the pointer", "Declares a new variable", "Dereferences the pointer to access the value", "Deletes the pointer"],
     correct: 2,
     explanation: "The dereference operator (*) accesses the value stored at the memory address the pointer is pointing to.",
+    childExplanation: "You have a map that says 'Room 5'. Using the * is like actually walking to Room 5 and opening the door to see what's inside! Without *, you're just staring at the map. ⭐",
   },
   {
     topic: "Memory Management",
@@ -35,6 +38,7 @@ const questions: Question[] = [
     options: ["It returns 0", "It causes undefined behavior / crash", "It auto-allocates memory", "Nothing happens"],
     correct: 1,
     explanation: "Dereferencing a NULL pointer leads to undefined behavior, typically a segmentation fault or crash.",
+    childExplanation: "A NULL pointer is like a treasure map that says 'NOWHERE'. If you try to go to Nowhere to find treasure... you'll trip and fall! The computer crashes because there's nothing there. 💥",
   },
   {
     topic: "Memory Management",
@@ -42,6 +46,7 @@ const questions: Question[] = [
     options: ["malloc()", "alloc()", "new", "create()"],
     correct: 2,
     explanation: "The 'new' operator allocates memory on the heap and returns a pointer to that memory. 'malloc()' is from C and works but isn't idiomatic C++.",
+    childExplanation: "Think of 'new' like raising your hand in class and asking the teacher for a new notebook. The teacher (computer) gives you one from the supply closet (heap memory) and you get to use it! 📓",
   },
   {
     topic: "OOP Concepts",
@@ -49,6 +54,7 @@ const questions: Question[] = [
     options: ["Inheriting from a parent class", "Bundling data and methods that operate on it together", "Creating multiple objects", "Overloading operators"],
     correct: 1,
     explanation: "Encapsulation means wrapping data (variables) and the code (methods) that acts on it into a single unit (class), and controlling access via public/private modifiers.",
+    childExplanation: "Encapsulation is like a toy capsule machine! 🎰 Everything the toy needs (its parts and instructions) is bundled inside one capsule. You can play with the toy, but you can't see the gears inside — they're hidden and protected!",
   },
 ];
 
@@ -106,12 +112,12 @@ const QuizPage = ({ onClose }: { onClose: () => void }) => {
   const [answers, setAnswers] = useState<(number | null)[]>(Array(questions.length).fill(null));
   const [phase, setPhase] = useState<Phase>("quiz");
   const [expandedNote, setExpandedNote] = useState<string | null>(null);
+  const [showChildExplanation, setShowChildExplanation] = useState<number | null>(null);
 
   const q = questions[current];
   const score = answers.filter((a, i) => a === questions[i].correct).length;
   const pct = Math.round((score / questions.length) * 100);
 
-  // Find weak topics (any wrong answer)
   const weakTopics = [...new Set(
     questions
       .filter((qu, i) => answers[i] !== qu.correct)
@@ -123,6 +129,8 @@ const QuizPage = ({ onClose }: { onClose: () => void }) => {
       .filter((qu, i) => answers[i] === qu.correct)
       .map((qu) => qu.topic)
   )].filter((t) => !weakTopics.includes(t));
+
+  const wrongQuestions = questions.filter((_, i) => answers[i] !== questions[i].correct);
 
   const handleSelect = (idx: number) => {
     if (answered) return;
@@ -152,6 +160,7 @@ const QuizPage = ({ onClose }: { onClose: () => void }) => {
     setAnswers(Array(questions.length).fill(null));
     setPhase("quiz");
     setExpandedNote(null);
+    setShowChildExplanation(null);
   };
 
   const isPerfect = pct === 100;
@@ -351,25 +360,57 @@ const QuizPage = ({ onClose }: { onClose: () => void }) => {
                 <div className="space-y-2 mb-6">
                   {questions.map((qu, i) => {
                     const correct = answers[i] === qu.correct;
+                    const isChildOpen = showChildExplanation === i;
                     return (
                       <motion.div
                         key={i}
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 * i }}
-                        className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm ${
-                          correct ? "bg-green-500/10 border border-green-500/20" : "bg-red-500/10 border border-red-500/20"
-                        }`}
                       >
-                        {correct
-                          ? <CheckCircle2 className="text-green-400 shrink-0" size={16} />
-                          : <XCircle className="text-red-400 shrink-0" size={16} />}
-                        <span className="text-foreground flex-1 text-xs">{qu.question}</span>
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                          correct ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
-                        }`}>
-                          {qu.topic}
-                        </span>
+                        <div
+                          className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm ${
+                            correct ? "bg-green-500/10 border border-green-500/20" : "bg-red-500/10 border border-red-500/20"
+                          } ${!correct ? "rounded-b-none" : ""}`}
+                        >
+                          {correct
+                            ? <CheckCircle2 className="text-green-400 shrink-0" size={16} />
+                            : <XCircle className="text-red-400 shrink-0" size={16} />}
+                          <span className="text-foreground flex-1 text-xs">{qu.question}</span>
+                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                            correct ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
+                          }`}>
+                            {qu.topic}
+                          </span>
+                          {!correct && (
+                            <button
+                              onClick={() => setShowChildExplanation(isChildOpen ? null : i)}
+                              className="shrink-0 flex items-center gap-1 text-xs bg-primary/15 hover:bg-primary/25 text-primary rounded-full px-2 py-1 transition-all"
+                              title="Explain like I'm a child"
+                            >
+                              <Baby size={12} />
+                              <span className="hidden sm:inline">ELI5</span>
+                            </button>
+                          )}
+                        </div>
+                        <AnimatePresence>
+                          {!correct && isChildOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="bg-primary/5 border border-t-0 border-primary/20 rounded-b-xl px-4 py-3">
+                                <p className="text-xs font-semibold text-primary mb-1 flex items-center gap-1.5">
+                                  <Baby size={14} /> Explain Like I'm a Child
+                                </p>
+                                <p className="text-muted-foreground text-sm leading-relaxed">{qu.childExplanation}</p>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </motion.div>
                     );
                   })}
@@ -416,6 +457,29 @@ const QuizPage = ({ onClose }: { onClose: () => void }) => {
                       ))}
                     </div>
                   </motion.div>
+                )}
+
+                {/* Explain all wrong ones button */}
+                {wrongQuestions.length > 0 && (
+                  <motion.button
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      // Toggle all child explanations
+                      if (showChildExplanation !== null) {
+                        setShowChildExplanation(null);
+                      } else {
+                        const firstWrong = questions.findIndex((_, i) => answers[i] !== questions[i].correct);
+                        setShowChildExplanation(firstWrong);
+                      }
+                    }}
+                    className="w-full mb-4 bg-primary/10 border border-primary/20 text-primary rounded-xl py-3 font-semibold text-sm flex items-center justify-center gap-2 hover:bg-primary/20 transition-all"
+                  >
+                    <Baby size={16} /> Explain Like I'm a Child
+                  </motion.button>
                 )}
 
                 {/* Actions */}

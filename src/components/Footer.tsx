@@ -11,7 +11,7 @@ const Footer = () => (
         Built by <span className="text-foreground font-medium">Arnav, Rohit, Samarth, Parth, and Yash</span> for DESPU Design Thinking 2026.
       </p>
       <p className="text-muted-foreground/50 text-xs">
-        Powered by the Feynman Technique • Active Recall • Spaced Repetition
+        Powered by Active Recall • Spaced Repetition • Simple Explanations
       </p>
     </div>
   </footer>

@@ -94,7 +94,7 @@ const HeroSection = ({ onStartQuiz }: { onStartQuiz?: () => void }) => {
           transition={{ duration: 0.7, delay: 0.4 }}
           className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed"
         >
-          The AI-powered study assistant that transforms static PDF notes into interactive micro-quizzes using the Feynman Technique. Prove you know it before the exam.
+          The AI-powered study assistant that transforms static PDF notes into interactive micro-quizzes and simple explanations. Prove you know it before the exam.
         </motion.p>
 
         <motion.div

@@ -38,7 +38,7 @@ const useCountUp = (target: number, duration: number = 2000) => {
 const stats = [
   { value: 60, suffix: "%", label: "suffer from Illusion of Competence" },
   { value: 3, suffix: "x", label: "better retention with active recall" },
-  { value: 89, suffix: "%", label: "of students improved with Feynman method" },
+  { value: 89, suffix: "%", label: "of students improved with active recall" },
 ];
 
 const ProblemBar = () => {
