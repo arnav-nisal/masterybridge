@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useConfetti } from "@/hooks/useConfetti";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircle2, XCircle, ArrowRight, RotateCcw, Trophy,
