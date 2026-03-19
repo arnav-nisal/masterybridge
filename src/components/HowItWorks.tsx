@@ -4,7 +4,7 @@ import { Upload, Search, Brain, ArrowRight } from "lucide-react";
 const steps = [
   { icon: Upload, title: "Upload Context", desc: "Drop your syllabus or notes. We process the technical jargon instantly.", color: "bg-primary/10 text-primary" },
   { icon: Search, title: "Find Blind Spots", desc: "Take a 3-question micro-quiz to find exactly what you don't know.", color: "bg-secondary/10 text-secondary" },
-  { icon: Brain, title: "The Feynman Mirror", desc: "Explain the concepts you got wrong to our AI like it's a 10-year-old. We'll grade your true understanding.", color: "bg-primary/10 text-primary" },
+  { icon: Brain, title: "Explain Like a Child", desc: "Struggle with a concept? Hit one button and get it broken down so simply a 10-year-old could understand.", color: "bg-primary/10 text-primary" },
 ];
 
 const HowItWorks = () => (
