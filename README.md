@@ -3,7 +3,7 @@
 > **A Concept Understanding & Self-Testing Assistant**
 > *Stop Reading. Start Mastering.*
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-View_Project-00E5FF?style=for-the-badge)](https://arnavs.dev/masterybridgeai)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-View_Project-00E5FF?style=for-the-badge)](https://masterybridge.arnavs.dev/)
 [![Design Thinking](https://img.shields.io/badge/Course-Design_Thinking-4B0082?style=for-the-badge)](#)
 
 ## 📌 The Problem
