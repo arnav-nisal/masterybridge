@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useConfetti } from "@/hooks/useConfetti";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircle2, XCircle, ArrowRight, RotateCcw, Trophy,
@@ -152,6 +153,9 @@ const QuizPage = ({ onClose }: { onClose: () => void }) => {
     setPhase("quiz");
     setExpandedNote(null);
   };
+
+  const isPerfect = pct === 100;
+  useConfetti(phase === "results" && isPerfect);
 
   return (
     <motion.div
@@ -320,11 +324,27 @@ const QuizPage = ({ onClose }: { onClose: () => void }) => {
                     </div>
                   </div>
                   <h3 className="text-foreground font-bold text-xl mb-1">
-                    {pct >= 80 ? "🔥 Excellent!" : pct >= 50 ? "💪 Good Effort!" : "📚 Keep Going!"}
+                    {isPerfect ? "🎉 Perfect Score!" : pct >= 80 ? "🔥 Excellent!" : pct >= 50 ? "💪 Good Effort!" : "📚 Keep Going!"}
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    {pct >= 80 ? "You've got a solid grip on these concepts." : pct >= 50 ? "Almost there — review the topics below to level up." : "Focus on the weak areas below and try again."}
+                    {isPerfect
+                      ? "You absolutely nailed it! Every single question correct — you've truly mastered these concepts. 🏆"
+                      : pct >= 80 ? "You've got a solid grip on these concepts."
+                      : pct >= 50 ? "Almost there — review the topics below to level up."
+                      : "Focus on the weak areas below and try again."}
                   </p>
+
+                  {isPerfect && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
+                      className="mt-4 inline-flex items-center gap-2 bg-primary/15 border border-primary/30 rounded-full px-4 py-2"
+                    >
+                      <Trophy className="text-primary" size={16} />
+                      <span className="text-primary text-sm font-semibold">Concept Master — All Topics Cleared!</span>
+                    </motion.div>
+                  )}
                 </div>
 
                 {/* Question breakdown */}
